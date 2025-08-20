@@ -1,0 +1,558 @@
+﻿@model ML.UsuarioML
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="text-center"> Agregar Usuario <i class="bi bi-person-plus-fill"></i></h4>
+
+@using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation", novalidate = "novalidate" }))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-3">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <div>
+                    @Html.HiddenFor(model => model.IdUsuario)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.Nombre)
+                    @Html.TextBoxFor(Model => Model.Nombre, new { @class = "form-control", required = "required", placeholder = "Escribe el Nombre", id = "Nombre", maxlength = "20", @onkeypress = "ValidarLetras(this, event)", onblur = "ValidarLetrasOnBlur(this)" })
+                    <div class="invalid-feedback Nombre"></div>
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.ApellidoPaterno)
+                    @Html.TextBoxFor(Model => Model.ApellidoPaterno, new { @class = "form-control", required = "required", placeholder = "Escribe el Apellido Paterno", @id = "ApellidoPaterno", maxlength = "10", @onkeypress = "ValidarLetras(this, event)", onblur = "ValidarLetrasOnBlur(this)" })
+                    <div class="invalid-feedback ApellidoPaterno"></div>
+                    @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.ApellidoMaterno)
+                    @Html.TextBoxFor(Model => Model.ApellidoMaterno, new { @class = "form-control", required = "required", placeholder = "Escribe el Apellido Materno", @id = "ApellidoMaterno", maxlength = "10", @onkeypress = "ValidarLetras(this, event)", onblur = "ValidarLetrasOnBlur(this)" })
+                    <div class="invalid-feedback ApellidoMaterno"></div>
+                    @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.UserName)
+                    @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", required = "required", id = "Username", placeholder = "Escribe el Username", maxlength = "8", onblur = "ValidarUserName(this)" })
+                    <div class="invalid-feedback Username"></div>
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+                <br />
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.Password)
+                    @Html.TextBoxFor(Model => Model.Password, new { @class = "form-control", id = "Password", required = "required", placeholder = "Escribe la contraseña", @type = "Password", maxlength = "8", onblur = "ValidarPassword(this)" })
+                    <div class="invalid-feedback Password"></div>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="PasswordConfirm">Confirmar contraseña</label>
+                    <input class="form-control" type="password" required id="PasswordConfirm" maxlength="12" placeholder="Confirma la contraseña" onblur="ConfirmarPassword(this)" />
+                    <div class="invalid-feedback PasswordConfirm"></div>
+                </div>
+
+                <div class="form-group">
+                    <label> Genero </label> <br />
+                    <label>
+                        @Html.RadioButtonFor(m => m.Sexo, "M ", new { @class = "form-check-input", required = "required" }) Masculino
+                    </label>
+                    <label>
+                        @Html.RadioButtonFor(m => m.Sexo, "F ", new { @class = "form-check-input" }) Femenino
+                    </label>
+                    <label>
+                        @Html.RadioButtonFor(m => m.Sexo, "X ", new { @class = "form-check-input" }) Otro
+                    </label>
+                    @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.Email)
+                    @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", required = "required", placeholder = "Escribe el email", @type = "email", onblur = "ValidarEmail()", maxlength = "30", id = "emailInput" , onpaste = "return false" })
+                    <div class="invalid-feedback">
+                        Ingresa un Email Valido , Ejemplo excample1@@outlook.com
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="EmailConfirm">Confirmar Email</label>
+                    <input class="form-control" type="text" required id="EmailConfirm" onblur="ConfirmarEmail(this)" maxlength="30" placeholder="Confirma el email" />
+                    <div class="invalid-feedback EmailConfirm"></div>
+                </div>
+                <br />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.Celular)
+                    @Html.TextBoxFor(Model => Model.Celular, new { @class = "form-control", placeholder = "5512345678", @type = "tel", id = "Celular", maxlength = "10", @onkeypress = "ValidarNumeros(this, event)", onblur = "ValidarNumerosOnBlur(this)" })
+                    <div class="invalid-feedback Celular"></div>
+                    @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.Telefono)
+                    @Html.TextBoxFor(Model => Model.Telefono, new { @class = "form-control", placeholder = "5512345678", @type = "tel", maxlength = "10", id = "Telefono", @onkeypress = "ValidarNumeros(this, event)", onblur = "ValidarNumerosOnBlur(this)" })
+                    <div class="invalid-feedback Telefono"></div>
+                    @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.CURP)
+                    @Html.TextBoxFor(Model => Model.CURP, new { @class = "form-control", placeholder = "Escribe el CURP", maxlength = "18", @onblur = "ValidarCURP(this)" })
+                    <div class="invalid-feedback">
+                        Ingresa un CURP Valido, Ejemplo RACW050729MMCSHNA2
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CURP, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.Rol.IdRol)
+                    @Html.DropDownListFor(Model => Model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Descripcion"), "Selecciona una Opcion", new { @class = "form-control", required = "required" })
+                </div>
+                @Html.ValidationMessageFor(model => model.Rol.IdRol, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                    <label for="ArchivoImagen">Imagen</label>
+                    <input type="file" name="ArchivoImagen" id="ArchivoImagen" class="form-control" placeholder="Selecciona la imagen" accept="image/*" onchange="CargarImage(event)" />
+                    @Html.HiddenFor(Model => Model.Imagen)
+
+                    @if (Model.Imagen != null)
+                    {
+                        string imgBase64 = Convert.ToBase64String(Model.Imagen);
+                        <img src="data:Image/*;base64,@imgBase64" id="ImgInput" style="width:100px" />}
+                    else
+                    {
+                        <img src="~/Content/Images/user.jpg" id="ImgInput" style="width:100px" />}
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(Model => Model.FechaDeNacimiento)                    
+                    @Html.TextBoxFor(Model => Model.FechaDeNacimiento, new { @class = "form-control", @type = "text", id = "datepicker", name = "datepicker", maxlength = "10", placeholder = "Ingresa la Fecha de Nacimiento", @onchange = "ValidarFechaOnBlur(this)" , required = "required", @readonly = true})
+                    <div class="invalid-feedback datepicker"></div>
+                    @Html.ValidationMessageFor(model => model.FechaDeNacimiento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <h5 class="text-center">Direccion</h5>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-3 offset-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.Direccion.Calle)
+                        @Html.TextBoxFor(Model => Model.Direccion.Calle, new { @class = "form-control", placeholder = "Ingresa tu Calle", maxlength = "15", @onkeypress = "ValidarLetras(this, event)", @id = "Calle", onblur = "ValidarLetrasOnBlur(this)" })
+                        <div class="invalid-feedback Calle"></div>
+                        @Html.ValidationMessageFor(model => model.Direccion.Calle, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.Direccion.NumeroInterior)
+                        @Html.TextBoxFor(Model => Model.Direccion.NumeroInterior, new { @class = "form-control", placeholder = "Ingresa tu numero interior", maxlength = "5", type = "number", id = "NumInt", @onkeypress = "ValidarNumeros(this, event)", onblur = "ValidarNumerosOnBlur(this)" })
+                        <div class="invalid-feedback NumInt"></div>
+                        @Html.ValidationMessageFor(model => model.Direccion.NumeroInterior, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.Direccion.NumeroExterior)
+                        @Html.TextBoxFor(Model => Model.Direccion.NumeroExterior, new { @class = "form-control", placeholder = "Ingresa tu numero exterior", maxlength = "5", type = "number", id = "NumExt", @onkeypress = "ValidarNumeros(this, event)", onblur = "ValidarNumerosOnBlur(this)" })
+                        <div class="invalid-feedback NumExt"> </div>
+                        @Html.ValidationMessageFor(model => model.Direccion.NumeroExterior, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 offset-lg-1">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Direccion.Colonia.Municipio.Estado.Estados)
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.Estado.IdEstado, new SelectList(Model.Direccion.Colonia.Municipio.Estado.Estados, "IdEstado", "Nombre"), "Selecciona un Estado", new { @class = "form-control", @id = "ddlEstado", @onchange = "FillMunicipios(); FillColonias()" })
+                    </div>
+                    @{
+                        var municipios = Model.Direccion.Colonia.Municipio.Municipios ?? new List<object>();
+                        var municipioSeleccionado = Model.Direccion.Colonia.Municipio.IdMunicipio;
+                    }
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Direccion.Colonia.Municipio.Municipios)
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(municipios, "IdMunicipio", "Nombre", municipioSeleccionado), "Selecciona un Municipio", new { @class = "form-control", @id = "ddlMunicipio", @onchange = "FillColonias()" })
+                    </div>
+                    @{
+                        var colonias = Model.Direccion.Colonia.Colonias ?? new List<object>();
+                        var coloniaSeleccionada = Model.Direccion.Colonia.IdColonia;
+                    }
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Direccion.Colonia.Colonias)
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(colonias, "IdColonia", "Nombre", coloniaSeleccionada), "Selecciona una Colonia", new { @class = "form-control", @id = "ddlColonia" })
+                    </div>
+                    <br />
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success">Agregar Usuario  <i class="bi bi-person-plus-fill"></i></button>
+        </div>
+    </div>
+
+}
+
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+
+<script>
+
+        var CargarImage = function (input) {
+            var img = input.target.files[0]
+
+            var ImgName = img.name;
+
+            if (Validar(ImgName)) {
+                alert("Imagen Cargada Correctamente")
+            }
+            else {
+                return null
+            }
+
+            var reader = new FileReader()
+            reader.onload = function () {
+                var output = $('#ImgInput')[0]
+                console.log(output)
+                output.src = reader.result
+            }
+            reader.readAsDataURL(img)
+        }
+
+
+        function Validar(imgName) {
+
+            let extensions = ["png", "jpg", "jpeg"];
+
+            if (imgName == null) {
+                alert("No se Subio el Archivo");
+                return false;
+            }
+
+            let imgExtension = imgName.split('.').pop().toLowerCase();
+
+            if (!extensions.includes(imgExtension)) {
+                alert("No es una Extension Valida")
+                return false;
+            }
+            return true;
+        }
+
+        function FillMunicipios()
+        {
+            var IdEstado = $('#ddlEstado').val();
+
+
+            $.ajax({
+
+                url: '@Url.Action("GetByIdEstado" , "Usuario")',
+                dataType: 'JSON',
+                //method: 'GET',
+                data: { IdEstado },
+                success: function (ResultMunicipios) {
+
+                    if (ResultMunicipios.Correct) {
+                        $('#ddlMunicipio').empty()
+                        $('#ddlMunicipio').append('<option value ="">Selecciona un Municipio</option>')
+
+
+                        $.each(ResultMunicipios.Objects, function (i, municipio) {
+                            $('#ddlMunicipio').append('<option value="' + municipio.IdMunicipio + '">' + municipio.Nombre + '</option>')
+                        })
+                    }
+                },
+                error: function (ex) {
+                    alert("Error")
+                }
+             })
+        }
+
+        function FillColonias()
+    {
+        var IdMunicipio = $('#ddlMunicipio').val();
+
+         $.ajax({
+
+            url: '@Url.Action("GetByIdMunicipio", "Usuario")',
+            dataType: 'JSON',
+            method: 'GET',
+            data: { IdMunicipio },
+            success: function (ResultColonias) {
+
+                if (ResultColonias.Correct) {
+                    $('#ddlColonia').empty()
+                    $('#ddlColonia').append('<option value ="">Selecciona una Colonia</option>')
+
+                    $.each(ResultColonias.Objects, function (i, colonia) {
+                        $('#ddlColonia').append('<option value="' + colonia.IdColonia + '">' + colonia.Nombre + '</option>')})
+                }
+            },
+            error: function (ex) {
+                alert("Error")
+            }
+        })
+    }
+
+            $("#datepicker").datepicker({
+                inline: true,
+                maxDate: 0,
+                dateFormat: "mm/dd/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1999:2012'
+            });
+
+    function ValidarEmail() {
+
+            const input = document.getElementById("emailInput");
+            const value = input.value;
+            console.log(input);
+
+            const regex = new RegExp ("^[^@@\\s]+@@[^@@\\s]+\\.[^@@\\s]+$");
+
+            if (regex.test(value)) {
+                input.classList.remove("is-invalid");
+                input.classList.add("is-valid");
+            } else {
+                input.classList.remove("is-valid");
+                input.classList.add("is-invalid");
+
+            }
+    }
+
+    function ValidarLetras(input, event) {
+            var letra = event.key;
+            console.log(letra);
+
+            const IdInput = $(input).attr("id");
+
+            const regex = new RegExp("[a-zA-Z]+$");
+
+            if (regex.test(letra)) {
+                input.classList.remove("is-invalid");
+                input.classList.add("is-valid");
+
+            } else {
+                event.preventDefault();
+                input.classList.remove("is-valid");
+                input.classList.add("is-invalid");
+                $("." + IdInput).text("Solo se permiten letras");
+            }
+    }
+
+    function ValidarLetrasASCII(input, event) {
+        var keyCode = event.keyCode || event.which;
+        const IdInput = $(input).attr("id");
+
+
+        if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || keyCode === 32) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        } else {
+            event.preventDefault();
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+            $("." + IdInput).text("Solo se permiten letras");
+        }
+    }
+
+    function ValidarLetrasOnBlur(input) {
+
+        const value = $(input).val();
+        console.log(value);
+
+        const regex = new RegExp("[a-zA-Z]+$");
+
+        if (regex.test(value)) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        }
+    }
+
+
+    function ValidarNumeros(input, event) {
+
+        var numero = event.key;
+
+            const IdInput = $(input).attr("id");
+
+            const regex = new RegExp("^[0-9]+$");
+
+            if (regex.test(numero)) {
+                input.classList.remove("is-invalid");
+                input.classList.add("is-valid");
+
+            } else {
+                event.preventDefault();
+                input.classList.remove("is-valid");
+                input.classList.add("is-invalid");
+                $("." + IdInput).text("Solo se permiten numeros");
+            }
+    }
+
+    function ValidarNumerosASCII(input, event) {
+        var keyCode = event.keyCode || event.which;
+        const IdInput = $(input).attr("id");
+
+        if (keyCode >= 48 && keyCode <= 57) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        } else {
+            event.preventDefault();
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+            $("." + IdInput).text("Solo se permiten numeros");
+        }
+    }
+
+    function ValidarNumerosOnBlur(input) {
+
+        const value = $(input).val();
+        console.log(value);
+
+        const regex = new RegExp("^[0-9]+$");
+
+        if (regex.test(value)) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        }
+    }
+
+    function ValidarCURP(input) {
+        setTimeout(() => {
+            const value = $(input).val().toUpperCase();
+            console.log(value);
+
+            const regex = new RegExp("^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$");
+
+            if (regex.test(value)) {
+                input.classList.remove("is-invalid");
+                input.classList.add("is-valid");
+
+            } else {
+                input.classList.remove("is-valid");
+                input.classList.add("is-invalid");
+            }
+        }, 0);
+    }
+
+    function ValidarFechaOnBlur(input) {
+            var value = $(input).val();
+            console.log(value);
+
+        var regex = new RegExp("^[0-9/]+$");
+
+            if (regex.test(value)) {
+                input.classList.remove("is-invalid");
+                input.classList.add("is-valid");
+            } else {
+                input.classList.remove("is-valid");
+                input.classList.add("is-invalid");
+            }
+    }
+
+    function ValidarUserName(input) {
+
+        var valor = $(input).val();
+
+        const IdInput = $(input).attr("id");
+
+        const regex = /^[a-zA-Z0-9._]{5,8}$/;
+
+        if (regex.test(valor)) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+
+        } else {
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+            $("." + IdInput).text("Miimo 5 caracteres , Solo letras, números y guion bajo o punto, Sin caracteres especiales");
+        }
+    }
+
+    function ValidarPassword(input) {
+
+        var valor = $(input).val();
+        const IdInput = $(input).attr("id");
+
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@@#$%^&*()_+{}\[\]:;<>,.?~\\\/-]).{8,}$/;
+
+        if (regex.test(valor)) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+
+        } else {
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+            $("." + IdInput).text("Agrega al menos 8 caracteres una letra, un numero y un caracter especial");
+        }
+    }
+
+    function ConfirmarPassword(input) {
+        var contraseña1 = $("#Password").val();
+        var contraseña2 = $(input).val();
+
+        const IdInput = $(input).attr("id");
+
+        if (contraseña1 == contraseña2) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        } else {
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+            $("." + IdInput).text("Las Contraseñas no coinciden");
+        }
+    }
+
+    function ConfirmarEmail(input) {
+        var contraseña1 = $("#emailInput").val();
+        var contraseña2 = $(input).val();
+
+            const IdInput = $(input).attr("id");
+
+            if (contraseña1 == contraseña2) {
+                input.classList.remove("is-invalid");
+                input.classList.add("is-valid");
+            } else {
+                input.classList.remove("is-valid");
+                input.classList.add("is-invalid");
+                $("." + IdInput).text("Los emails no coinciden");
+            }
+
+    }
+</script>
+
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+
+
+
+

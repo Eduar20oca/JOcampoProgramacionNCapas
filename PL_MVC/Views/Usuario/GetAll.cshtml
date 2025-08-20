@@ -1,0 +1,348 @@
+﻿@model ML.UsuarioML
+
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2 class="text-center mb-6">Lista de Usuarios <i class="bi bi-card-checklist"></i></h2>
+
+<div class="container">
+    <div class="row ">
+        <div class="col-6 text-start">
+            <button class="btn btn-primary" onclick="toggleFormulario('FormularioGetAll')"> Buscar Usuarios <i class="bi bi-search"></i></button>
+        </div>
+        <div class="col-6 text-end">
+            <button id="CM" class="btn btn-secondary" onclick="toggleFormulario('FormularioCargaMasiva')">Carga Masiva <i class="bi bi-upload"></i></button>
+        </div>
+    </div>
+</div>
+<br />
+
+
+@using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post))
+{
+    <h4 class="text-start" style="display: none"> Buscar Usuario </h4>
+    <div class="container" id="FormularioGetAll" style="display: none">
+        <div class="row">
+            <div class="col-12">
+                <label class="form-group col-3">
+                    @Html.LabelFor(Model => Model.Nombre)
+                    @Html.TextBoxFor(Model => Model.Nombre, new { @class = "form-control", placeholder = "Escribe el Nombre" })
+                </label>
+
+                <label class="form-group col-3">
+                    @Html.LabelFor(Model => Model.ApellidoPaterno)
+                    @Html.TextBoxFor(Model => Model.ApellidoPaterno, new { @class = "form-control", placeholder = "Escribe el Apellido Paterno" })
+                </label>
+
+                <label class="form-group col-3">
+                    @Html.LabelFor(Model => Model.ApellidoMaterno)
+                    @Html.TextBoxFor(Model => Model.ApellidoMaterno, new { @class = "form-control", placeholder = "Escribe el Apellido Materno" })
+                </label>
+
+                <label class="form-group col-2">
+                    @Html.LabelFor(Model => Model.Rol.Roles)
+                    @Html.DropDownListFor(Model => Model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Descripcion"), "Selecciona una Opcion", new { @class = "form-control" })
+                </label>
+                <label>
+                    <br />
+                    <button type="submit" class="btn btn-success">Buscar Coincidencias  <i class="bi bi-search"></i></button>
+                </label>
+            </div>
+        </div>
+    </div>
+}
+
+
+@using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCarga" }))
+{
+    <div class="container" id="FormularioCargaMasiva" style="display: none;">
+        <div class="row">
+            <div class="form-group col-4">
+                <label class="me-5">
+                    <input type="radio" id="Txt" name="tipoArchivo" value="txt" onchange="habilitarInput()"> Txt
+                </label>
+                <label class="ms-5">
+                    <input type="radio" id="Excel" name="tipoArchivo" value="xlsx" onchange="habilitarInput()"> Excel
+                </label>
+                <br />
+            </div>
+            <br />
+            <div class="form-group row ">
+                <label class="col-3 ">
+                    <input type="file" name="Archivo" id="Archivo" class="form-control" placeholder="Selecciona un archivo" disabled onchange="CargarArchivo(event)" />
+                </label>
+                <label class="col-3 text-end">
+                    <button type="submit" id="Validar" value="validar" class="btn btn-outline-warning" disabled>Validar <i class="bi bi-database-check"></i></button>
+                </label>
+
+                @if (Session["RutaTxtValidado"] != null || Session["RutaExcelValidado"] != null)
+                {
+                    <label class="col-3 text-center">
+                        <button type="submit" value="Cargar" id="cargar" name="cargar" class="btn btn-outline-success">Cargar  <i class="bi bi-cloud-arrow-up-fill"></i></button>
+                    </label>
+
+                }
+                else
+                {
+                    <label class="col-3 text-center">
+                        <button type="button" value="Cargar" id="cargar" name="cargar" class="btn btn-outline-success" disabled>Cargar  <i class="bi bi-cloud-arrow-up-fill"></i></button>
+                    </label>
+                }
+
+                <label class="col-3 text-start">
+                    <button type="button" value="Guardar" id="Guardar" name="Guardar" onclick="location.href='@Url.Action("DescargarErrores", "Usuario")'" class="btn btn-outline-primary" @(ViewBag.Guardar == true ? "" : "disabled")>Guardar  <i class="bi bi-download"></i></button>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    if (ViewBag.Listas != null)
+    {
+        @Html.Partial("_Errores")
+    }
+}
+
+
+
+<div class="container" id="Add">
+    <div class="row">
+        <hr class="my-4">
+        <div class="col-6 text-start">
+            <h3 id="Titutlo">Agregar Usuario</h3>
+        </div>
+
+        <div class="col-6 text-end">
+            <a href="@Url.Action("Form", "Usuario", new { IdUsuario = 0 })" id="Add" class="btn btn-success"><i class="bi bi-person-fill-add"></i></a>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="container" id="TablaUsuarios">
+    <div class="row">
+        <div class="table-responsive table-bordered">
+            <table class="col-12 table">
+                <thead class="text-center">
+                    <tr>
+                        <th>Eliminar</th>
+                        <th>Editar</th>
+                        <th>Estatus</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>UserName</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Sexo</th>
+                        <th>Telefono</th>
+                        <th>Celular</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>CURP</th>
+                        <th>Rol</th>
+                        <th>Calle</th>
+                        <th>Numero Interior</th>
+                        <th>Numero Exterior</th>
+                        <th>Colonia</th>
+                        <th>Municipio</th>
+                        <th>Estado</th>
+                        <th>Imagen</th>
+                    </tr>
+                </thead>
+
+                <tbody class="text-center">
+                    @if (Model.Usuarios != null && Model.Usuarios.Any())
+                    {
+                        foreach (ML.UsuarioML usuario in Model.Usuarios)
+                        {
+
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Delete", "Usuario", new { IdUsuario = usuario.IdUsuario })"
+                                       onclick="return confirm('¿Estas seguro que deseas eliminar a este usuario?')">
+                                        <i class="bi bi-person-dash btn btn-danger"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href=@Url.Action("Form", "Usuario", new { IdUsuario = usuario.IdUsuario })>
+                                        <i class="bi bi-pencil-square btn btn-warning"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input" onchange="ActualizarEstatus(this, @usuario.IdUsuario)" @(usuario.Estatus ? "checked" : "") />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@usuario.IdUsuario</td>
+                                <td>@usuario.Nombre</td>
+                                <td>@usuario.ApellidoPaterno</td>
+                                <td>@usuario.ApellidoMaterno</td>
+                                <td>@usuario.UserName</td>
+                                <td>@usuario.Email</td>
+                                <td>@usuario.Password</td>
+                                <td>@usuario.Sexo</td>
+                                <td>@usuario.Telefono</td>
+                                <td>@usuario.Celular</td>
+                                <td>@usuario.FechaDeNacimiento</td>
+                                <td>@usuario.CURP</td>
+                                <td>@usuario.Rol.Descripcion</td>
+                                <td>@usuario.Direccion.Calle</td>
+                                <td>@usuario.Direccion.NumeroInterior</td>
+                                <td>@usuario.Direccion.NumeroExterior</td>
+                                <td>@usuario.Direccion.Colonia.Nombre</td>
+                                <td>@usuario.Direccion.Colonia.Municipio.Nombre</td>
+                                <td>@usuario.Direccion.Colonia.Municipio.Estado.Nombre</td>
+                                @if (usuario.Imagen != null)
+                                {
+                                    string imgBase64 = Convert.ToBase64String(usuario.Imagen);
+                                    <td><img src="data:Image/*;base64,@imgBase64" style="width:100px" /></td>
+                                }
+                                else
+                                {
+                                    <td><img src="~/Content/Images/user.jpg" id="ImgInput" style="width:100px" /></td>
+                                }
+                            </tr>
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="23">No se encontraron Coincidencias</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script>
+
+      function ActualizarEstatus(cambioEstatus, IdUsuario) {
+
+        var Estatus = $(cambioEstatus).is(':checked')
+
+        $.ajax({
+
+            url: '@Url.Action("UpdateEstatus")',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                Estatus,
+                IdUsuario},
+            success: function (ResultUpdateEstatus) {
+                if (ResultUpdateEstatus.Correct) {
+                    console.log('Estado Actualizado')
+                } else {
+                    alert("No Se Pudo Actualizar El Estado Del Usuario")
+                }
+            },
+            error: function () {
+                alert('Error en la peticion')
+            }
+        })
+       }
+
+        var CargarArchivo = function (input) {
+            var Archivo = input.target.files[0]
+
+            var ArchivoName = Archivo.name;
+
+            if (!Validar(ArchivoName)) {
+                input.target.value = "";
+                document.getElementById("Validar").disabled = true;
+                return;
+            }
+
+            document.getElementById("Validar").disabled = false;
+            alert("Archivo Cargado Correctamente")
+
+        }
+
+
+        function Validar(ArchivoName) {
+
+            var Txt = $('#Txt').is(':checked');
+            var Excel = $('#Excel').is(':checked');
+            console.log(Txt);
+            console.log(Excel);
+
+            let extensionTxt = ["txt"];
+            let extensionExcel = ["xlsx"];
+
+            if (ArchivoName == null) {
+                alert("No se Subio el Archivo");
+                return false;
+            }
+
+            let ArchivoExtension = ArchivoName.split('.').pop().toLowerCase();
+
+            if (Txt && extensionTxt.includes(ArchivoExtension)) {
+                return true;
+
+            }
+            else if (Excel && extensionExcel.includes(ArchivoExtension)) {
+                return true;
+            }
+            else {
+                alert("No es una Extension Valida")
+                return false;
+            }
+        }
+
+        function toggleFormulario(idFormulario) {
+            var form1 = document.getElementById('FormularioGetAll');
+            var form2 = document.getElementById('FormularioCargaMasiva');
+
+
+            var formMostrar = document.getElementById(idFormulario);
+            var otroFormulario = idFormulario === 'FormularioGetAll' ? form2 : form1;
+
+            if (formMostrar.style.display === 'block') {
+
+                formMostrar.style.display = 'none';
+            } else {
+                otroFormulario.style.display = 'none';
+                formMostrar.style.display = 'block';
+            }
+        }
+
+        function habilitarInput() {
+            const inputArchivo = document.getElementById('Archivo');
+            inputArchivo.disabled = false;
+    }
+
+</script>
+
+@if (ViewBag.MostrarFormularioCarga == true)
+{
+    <script>
+        document.getElementById("FormularioCargaMasiva").style.display = "block";
+    </script>
+
+    <script>
+        document.getElementById("Guardar").addEventListener("click", function () {
+            this.disabled = true;
+        });
+    </script>
+
+    <script>
+        document.getElementById('cargar').addEventListener('click', function () {
+        document.getElementById('formCarga').action = '@Url.Action("InsertarRegistros", "Usuario")';
+                    });
+    </script>
+}
+

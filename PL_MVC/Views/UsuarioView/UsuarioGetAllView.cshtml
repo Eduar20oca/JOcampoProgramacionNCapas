@@ -1,0 +1,77 @@
+﻿@model ML.UsuarioML
+@{
+    ViewBag.Title = "UsuarioGetAllView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-6">Lista de Usuarios <i class="bi bi-card-checklist"></i></h2>
+
+<div class="container" id="TablaUsuarios">
+    <div class="row">
+        <div class="table-responsive table-bordered">
+            <table class="col-12 table">
+                <thead class="text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>UserName</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Sexo</th>
+                        <th>Telefono</th>
+                        <th>Celular</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>CURP</th>
+                        <th>Rol</th>
+                        <th>Calle</th>
+                        <th>Numero Interior</th>
+                        <th>Numero Exterior</th>
+                        <th>Colonia</th>
+                        <th>Municipio</th>
+                        <th>Estado</th>
+                        <th>Imagen</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (ML.UsuarioML usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td id="IdUsuario">@usuario.IdUsuario</td>
+                            <td>@usuario.Nombre</td>
+                            <td>@usuario.ApellidoPaterno</td>
+                            <td>@usuario.ApellidoMaterno</td>
+                            <td>@usuario.UserName</td>
+                            <td>@usuario.Email</td>
+                            <td>@usuario.Password</td>
+                            <td>@usuario.Sexo</td>
+                            <td>@usuario.Telefono</td>
+                            <td>@usuario.Celular</td>
+                            <td>@usuario.FechaDeNacimiento</td>
+                            <td>@usuario.CURP</td>
+                            <td>@usuario.Rol.Descripcion</td>
+                            <td>@usuario.Direccion.Calle</td>
+                            <td>@usuario.Direccion.NumeroInterior</td>
+                            <td>@usuario.Direccion.NumeroExterior</td>
+                            <td>@usuario.Direccion.Colonia.Nombre</td>
+                            <td>@usuario.Direccion.Colonia.Municipio.Nombre</td>
+                            <td>@usuario.Direccion.Colonia.Municipio.Estado.Nombre</td>
+                            @if (usuario.Imagen != null)
+                            {
+                                string imgBase64 = Convert.ToBase64String(usuario.Imagen);
+                                <td><img src="data:Image/*;base64,@imgBase64" style="width:100px" /></td>
+                            }
+                            else
+                            {
+                                <td><img src="~/Content/Images/user.jpg" id="ImgInput" style="width:100px" /></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

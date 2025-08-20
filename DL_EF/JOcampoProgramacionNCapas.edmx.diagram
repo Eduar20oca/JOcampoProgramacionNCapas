@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="46ba67bb5e994e9fba1b425ce08ca42d" Name="Diagram1">
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.Rol" Width="1.5" PointX="0.5" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.Usuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="JOcampoProgramacionNCapasModel.FK_rol" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.Colonia" Width="1.5" PointX="9.875" PointY="0.875" />
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.Estado" Width="1.5" PointX="5.375" PointY="1.125" />
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.Municipio" Width="1.5" PointX="7.625" PointY="0.875" />
+        <AssociationConnector Association="JOcampoProgramacionNCapasModel.FK_Municipio" />
+        <AssociationConnector Association="JOcampoProgramacionNCapasModel.FK_Estado" />
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.Direccion" Width="1.5" PointX="10.25" PointY="3.625" />
+        <AssociationConnector Association="JOcampoProgramacionNCapasModel.FK_Colonia" />
+        <AssociationConnector Association="JOcampoProgramacionNCapasModel.FK_Usuario" />
+        <EntityTypeShape EntityType="JOcampoProgramacionNCapasModel.UsuarioGetAllView" Width="1.5" PointX="5.375" PointY="3.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

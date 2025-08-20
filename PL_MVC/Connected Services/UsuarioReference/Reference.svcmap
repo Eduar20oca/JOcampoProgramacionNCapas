@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="916b6565-4866-4456-9ebc-ea70e07638a4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:56986/CRUDUsuario.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CRUDUsuario.xsd" MetadataType="Schema" ID="80ba3be4-eb60-4572-8f65-6ae752087a6c" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?xsd=xsd1" />
+    <MetadataFile FileName="CRUDUsuario1.xsd" MetadataType="Schema" ID="f72b458d-e81c-455e-adfb-37660baae6d5" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?xsd=xsd4" />
+    <MetadataFile FileName="CRUDUsuario2.xsd" MetadataType="Schema" ID="f59ae2cb-b567-41c3-bf9b-b9ea44596d8c" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?xsd=xsd5" />
+    <MetadataFile FileName="CRUDUsuario.disco" MetadataType="Disco" ID="bd53e2d8-2bdc-4d1b-8757-3fd336b90375" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?disco" />
+    <MetadataFile FileName="CRUDUsuario.wsdl" MetadataType="Wsdl" ID="5fa6e89b-1519-41ad-8b39-67762c4d0b36" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?wsdl" />
+    <MetadataFile FileName="CRUDUsuario3.xsd" MetadataType="Schema" ID="52f4425a-6144-4006-b436-1d1c7ebf3cb7" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?xsd=xsd2" />
+    <MetadataFile FileName="CRUDUsuario4.xsd" MetadataType="Schema" ID="e46b48ed-b1a7-457c-a4ef-8ddbc1b83ff3" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?xsd=xsd3" />
+    <MetadataFile FileName="CRUDUsuario5.xsd" MetadataType="Schema" ID="94ecfa67-86d8-4ea0-87ba-70acbee60243" SourceId="1" SourceUrl="http://localhost:56986/CRUDUsuario.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

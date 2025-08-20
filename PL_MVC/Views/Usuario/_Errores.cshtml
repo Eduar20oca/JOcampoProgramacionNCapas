@@ -1,0 +1,53 @@
+﻿@{
+    int errores = 1;
+
+}
+
+@if (ViewBag.Listas != null)
+{
+    <div class="modal fade" id="modalMensaje" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white @(ViewBag.Listas.Errores.Count > 0 ? "bg-danger" : "bg-success")">
+                    <h5 class="modal-title">@(ViewBag.Listas.Errores.Count > 0 ? "Validacion" : "Todo Correcto")</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    @if (ViewBag.Listas.Errores != null || ViewBag.Listas.Correctos != null)
+                    {
+                        <ul>
+                            <h6> Errores </h6>
+                            @foreach (var error in ViewBag.Listas.Errores)
+                            {                                
+                                <li class="text-danger"> @errores @error <i class="bi bi-x-lg"></i></li>
+                                errores++;
+                            }
+                        </ul>
+
+                        <ul>
+                            <h6> Registros Correctos </h6>
+                            @foreach (var correcto in ViewBag.Listas.Correctos)
+                            {
+
+                                <li class="text-success"> @correcto <i class="bi bi-check-lg"></i></li>
+                            }
+                        </ul>
+                    }
+
+                    else
+                    {
+                        <p>@ViewBag.Mensaje</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        var modal = new bootstrap.Modal(document.getElementById('modalMensaje'));
+        modal.show();
+    </script>
+}
